@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: fe2a18ac3f3f4e94589fd806251e52fb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - digit0: {fileID: 21300018, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - digit1: {fileID: 21300000, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - digit2: {fileID: 21300002, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - digit3: {fileID: 21300004, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - digit4: {fileID: 21300006, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - digit5: {fileID: 21300008, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - digit6: {fileID: 21300010, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - digit7: {fileID: 21300012, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - digit8: {fileID: 21300014, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - digit9: {fileID: 21300016, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - minus: {fileID: 21300062, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - colon: {fileID: 21300100, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - left: {fileID: 21300102, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - right: {fileID: 21300104, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

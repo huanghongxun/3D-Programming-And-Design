@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e6279ae2de0a128448ff9bf212191843
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - DefaultSprite: {fileID: 21300020, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - WinSprite: {fileID: 21300026, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - PressedSprite: {fileID: 21300022, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - LoseSprite: {fileID: 21300028, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

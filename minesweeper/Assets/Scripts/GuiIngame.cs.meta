@@ -1,0 +1,30 @@
+fileFormatVersion: 2
+guid: cef84f0df244f09439e1b65d792abbc9
+timeCreated: 1454352093
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - TileUnknown: {fileID: 21300030, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - TilePressed: {fileID: 21300032, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - Tile0: {fileID: 21300032, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - Tile1: {fileID: 21300046, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - Tile2: {fileID: 21300048, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - Tile3: {fileID: 21300050, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - Tile4: {fileID: 21300052, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - Tile5: {fileID: 21300054, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - Tile6: {fileID: 21300056, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - Tile7: {fileID: 21300058, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - Tile8: {fileID: 21300060, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - TileMine: {fileID: 21300040, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - TileFlag: {fileID: 21300034, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - TileQuestion: {fileID: 21300036, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - TileQuestionPressed: {fileID: 21300038, guid: bbf1608df437159458ebfa96e34067ae,
+      type: 3}
+  - TileDead: {fileID: 21300042, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  - TileWrong: {fileID: 21300044, guid: bbf1608df437159458ebfa96e34067ae, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
