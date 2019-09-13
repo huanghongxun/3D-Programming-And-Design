@@ -4,7 +4,7 @@
 请注意，当你在打开 Unity 项目的时候，必须先选中 MainMenuScene 才能加载出主场景。
 
 ## Screenshots
-![1568376916573](assets/1568376916573.png)
+![1568376916573](Assets/1568376916573.png)
 
 ## Spotlight
 
