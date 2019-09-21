@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Coast : Entity
 {
-    public static readonly Vector3[] positions = { new Vector3(-1.5f, 1.25f, -0.25f), new Vector3(-1.5f, 1.25f, -0.25f), new Vector3(0, 1.25f, -0.25f), new Vector3(0, 1.25f, 0.25f), new Vector3(1.5f, 1.25f, -0.25f), new Vector3(1.5f, 1.25f, 0.25f),  };
+    public static readonly Vector3[] positions = { new Vector3(-1.5f, 1.25f, -0.25f), new Vector3(-1.5f, 1.25f, 0.25f), new Vector3(0, 1.25f, -0.25f), new Vector3(0, 1.25f, 0.25f), new Vector3(1.5f, 1.25f, -0.25f), new Vector3(1.5f, 1.25f, 0.25f),  };
 
     public Vector3 BoatStopPosition { get; set; }
 
@@ -19,20 +19,20 @@ public class Coast : Entity
         GoOffShore(entity);
     }
 
-    public void GoOffShore(Entity entity)
+    public bool GoOffShore(Entity entity)
     {
         for (int i = 0; i < onShore.Length; ++i)
         {
-            if (onShore[i] == entity)
-            {
-                onShore[i] = null;
-                transform.GetComponentInChildren<Boat>()?.TakeBoat(entity);
-                break;
-            }
+            if (onShore[i] != entity) continue;
+            if (!(transform.GetComponentInChildren<Boat>()?.TakeBoat(entity) ?? false)) continue;
+            onShore[i] = null;
+            return true;
         }
+
+        return false;
     }
 
-    public void GoOnShore(Entity entity)
+    public bool GoOnShore(Entity entity)
     {
         for (var i = 0; i < onShore.Length; ++i)
         {
@@ -40,7 +40,9 @@ public class Coast : Entity
             entity.transform.parent = transform;
             entity.transform.localPosition = positions[i];
             onShore[i] = entity;
-            break;
+            return true;
         }
+
+        return false;
     }
 }

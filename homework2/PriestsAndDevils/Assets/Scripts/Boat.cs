@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Boat : Entity
 {
-    public static readonly Vector3[] departures = { new Vector3(-0.5f, 1.5f, 0), new Vector3(3.5f, 1.5f, 0) };
+    public static readonly Vector3[] departures = { new Vector3(-0.5f, 0.5f, 0), new Vector3(0.5f, 0.5f, 0) };
 
     private readonly Entity[] onBoat = new Entity[2];
     
@@ -23,11 +23,7 @@ public class Boat : Entity
         }
 
         // clicking boat pass to parent entity
-        Entity parentEntity = transform.parent?.GetComponent<Entity>();
-        if (parentEntity)
-        {
-            parentEntity.OnAction(entity);
-        }
+        base.OnAction(entity);
     }
 
     public IList<Entity> GetOnBoat()
@@ -35,16 +31,19 @@ public class Boat : Entity
         return onBoat;
     }
 
-    public void TakeBoat(Entity entity)
+    public bool TakeBoat(Entity entity)
     {
         for (var i = 0; i < 2; ++i)
         {
             if (onBoat[i]) continue;
+            onBoat[i] = entity;
             entity.gameObject.transform.parent = transform;
             entity.gameObject.transform.localPosition = departures[i];
             // entity.gameObject.AddComponent<MoveAction>().MoveLocalPosition(departures[i]);
-            break;
+            return true;
         }
+
+        return false;
     }
 
     public void StopAt(Coast coast)

@@ -12,10 +12,16 @@ public class EntityController : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 100f))
             {
-                var entity = hit.collider.GetComponent<Entity>();
-                if (entity)
+                for (var t = hit.collider.transform; t; t = t.parent)
+                    if (t.GetComponent<DisableEntityAction>())
+                        return;
+
+                for (var t = hit.collider.transform; t; t = t.parent)
                 {
+                    var entity = t.GetComponent<Entity>();
+                    if (!entity) continue;
                     entity.OnAction(entity);
+                    break;
                 }
             }
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ using UnityEngine;
 /// </summary>
 public class Entity : MonoBehaviour
 {
+    public event EventHandler<ActionEventArgs> Action;
+
     /// <summary>
     /// 默认行为是将点击事件返回上级处理
     /// </summary>
@@ -15,7 +18,14 @@ public class Entity : MonoBehaviour
     public virtual void OnAction(Entity entity)
     {
         transform.parent?.GetComponent<Entity>()?.OnAction(entity);
+        Action?.Invoke(this, new ActionEventArgs
+        {
+            Entity = entity
+        });
     }
 
-
+    public class ActionEventArgs
+    {
+        public Entity Entity { get; set; }
+    }
 }

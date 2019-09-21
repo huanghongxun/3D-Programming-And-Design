@@ -5,9 +5,7 @@ public abstract class SceneController : MonoBehaviour
 {
     public abstract void LoadResources();
 
-    public abstract void Pause();
-
-    public abstract void Resume();
+    public abstract void Restart();
 
     protected GameObject Instantiate(string name, string path)
     {
