@@ -2,7 +2,7 @@
 Library
 Logs
 obj
+Temp
 Packages
-ProjectSettings
 *.sln
 *.csproj
