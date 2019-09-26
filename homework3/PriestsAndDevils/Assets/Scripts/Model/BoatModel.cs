@@ -8,7 +8,7 @@ public class BoatModel : MonoBehaviour
 
     private readonly GameObject[] onBoat = new GameObject[2];
 
-    public event EventHandler StoppedAt;
+    public event EventHandler<StoppedAtEventArgs> StoppedAt;
 
 
     public IList<GameObject> GetOnBoat()
@@ -53,8 +53,19 @@ public class BoatModel : MonoBehaviour
     {
         transform.parent = coast.transform;
         var action = gameObject.AddComponent<BoatMoveAction>();
-        action.Action += delegate { StoppedAt?.Invoke(this, EventArgs.Empty); };
+        action.Action += delegate
+        {
+            StoppedAt?.Invoke(this, new StoppedAtEventArgs
+            {
+                coast = coast
+            });
+        };
         action.MovePosition(coast.BoatStopPosition, Quaternion.LookRotation(coast.BoatStopDirection), style);
         action.StartAction();
+    }
+
+    public class StoppedAtEventArgs : EventArgs
+    {
+        public CoastModel coast { get; set; }
     }
 }

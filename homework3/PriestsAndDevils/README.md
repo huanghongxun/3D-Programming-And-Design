@@ -8,7 +8,7 @@
 
 通过运用 Fantasy SkyBox FREE，我创建了河流、沙滩、树林、云层、月亮如下：
 
-
+![1569514218011](E:\sources\homework\3D-Programming-And-Design\homework3\PriestsAndDevils\assets\1569514218011.png)
 
 ### 游戏对象的使用
 
@@ -106,11 +106,11 @@ public class Game : MonoBehaviour
 
     public void StartGame()
     {
-        boat.StoppedAt += delegate
+        boat.StoppedAt += (sender, args) =>
         {
-            if (state == GameState.West)
+            if (args.coast == eastCoast)
                 state = GameState.East;
-            else if (state == GameState.East)
+            else if (args.coast == westCoast)
                 state = GameState.West;
             CheckGameState();
         };
@@ -122,21 +122,14 @@ public class Game : MonoBehaviour
         if (state != GameState.West && state != GameState.East) return;
 
         var west = westCoast.GetOnShore().Where(c => c != null);
-        var westPriests = west.Count(c => c is Priest);
-        var westDevils = west.Count(c => c is Devil);
+        var westPriests = west.Count(c => c.GetComponent<Priest>());
+        var westDevils = west.Count(c => c.GetComponent<Devil>());
         var east = eastCoast.GetOnShore().Where(c => c != null);
-        var eastPriests = east.Count(c => c is Priest);
-        var eastDevils = east.Count(c => c is Devil);
+        var eastPriests = east.Count(c => c.GetComponent<Priest>());
+        var eastDevils = east.Count(c => c.GetComponent<Devil>());
         var boat = this.boat.GetOnBoat().Where(c => c != null);
-        var boatPriests = boat.Count(c => c is Priest);
-        var boatDevils = boat.Count(c => c is Devil);
-
-        if (west.Count() == 6)
-        {
-            state = GameState.Win;
-            GameStateChanged?.Invoke(this, EventArgs.Empty);
-            return;
-        }
+        var boatPriests = boat.Count(c => c.GetComponent<Priest>());
+        var boatDevils = boat.Count(c => c.GetComponent<Devil>());
 
         if (state == GameState.East)
         {
@@ -147,6 +140,13 @@ public class Game : MonoBehaviour
         {
             westPriests += boatPriests;
             westDevils += boatDevils;
+        }
+
+        if (westPriests + westDevils == 6)
+        {
+            state = GameState.Win;
+            GameStateChanged?.Invoke(this, EventArgs.Empty);
+            return;
         }
 
         if (westPriests < westDevils && westPriests > 0 ||
@@ -162,6 +162,8 @@ public class Game : MonoBehaviour
 
 
 ## 演示视频
+
+在线观看：https://v.youku.com/v_show/id_XNDM3Njk4MDU2OA==.html?spm=a2h3j.8428770.3416059.1
 
 https://github.com/huanghongxun/3D-Programming-And-Design/tree/master/homework3/PriestsAndDevils/spotlight.mp4
 

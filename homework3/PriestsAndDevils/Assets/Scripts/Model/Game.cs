@@ -12,11 +12,11 @@ public class Game : MonoBehaviour
 
     public void StartGame()
     {
-        boat.StoppedAt += delegate
+        boat.StoppedAt += (sender, args) =>
         {
-            if (state == GameState.West)
+            if (args.coast == eastCoast)
                 state = GameState.East;
-            else if (state == GameState.East)
+            else if (args.coast == westCoast)
                 state = GameState.West;
             CheckGameState();
         };
@@ -28,21 +28,14 @@ public class Game : MonoBehaviour
         if (state != GameState.West && state != GameState.East) return;
 
         var west = westCoast.GetOnShore().Where(c => c != null);
-        var westPriests = west.Count(c => c is Priest);
-        var westDevils = west.Count(c => c is Devil);
+        var westPriests = west.Count(c => c.GetComponent<Priest>());
+        var westDevils = west.Count(c => c.GetComponent<Devil>());
         var east = eastCoast.GetOnShore().Where(c => c != null);
-        var eastPriests = east.Count(c => c is Priest);
-        var eastDevils = east.Count(c => c is Devil);
+        var eastPriests = east.Count(c => c.GetComponent<Priest>());
+        var eastDevils = east.Count(c => c.GetComponent<Devil>());
         var boat = this.boat.GetOnBoat().Where(c => c != null);
-        var boatPriests = boat.Count(c => c is Priest);
-        var boatDevils = boat.Count(c => c is Devil);
-
-        if (west.Count() == 6)
-        {
-            state = GameState.Win;
-            GameStateChanged?.Invoke(this, EventArgs.Empty);
-            return;
-        }
+        var boatPriests = boat.Count(c => c.GetComponent<Priest>());
+        var boatDevils = boat.Count(c => c.GetComponent<Devil>());
 
         if (state == GameState.East)
         {
@@ -53,6 +46,13 @@ public class Game : MonoBehaviour
         {
             westPriests += boatPriests;
             westDevils += boatDevils;
+        }
+
+        if (westPriests + westDevils == 6)
+        {
+            state = GameState.Win;
+            GameStateChanged?.Invoke(this, EventArgs.Empty);
+            return;
         }
 
         if (westPriests < westDevils && westPriests > 0 ||
