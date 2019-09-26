@@ -9,8 +9,8 @@ public class Boat : Entity
     
     public override void OnAction(Entity entity)
     {
-        // if (GetComponent<MoveAction>() || GetComponentInChildren<MoveAction>())
-        //     return;
+        if (GetComponent<MoveAction>() || GetComponentInChildren<MoveAction>())
+            return;
 
         for (int i = 0; i < onBoat.Length; ++i)
         {
@@ -38,8 +38,7 @@ public class Boat : Entity
             if (onBoat[i]) continue;
             onBoat[i] = entity;
             entity.gameObject.transform.parent = transform;
-            entity.gameObject.transform.localPosition = departures[i];
-            // entity.gameObject.AddComponent<MoveAction>().MoveLocalPosition(departures[i]);
+            entity.gameObject.AddComponent<MonoMoveAction>().MoveLocalPosition(departures[i]);
             return true;
         }
 
@@ -49,7 +48,6 @@ public class Boat : Entity
     public void StopAt(Coast coast)
     {
         transform.parent = coast.transform;
-        gameObject.transform.position = coast.BoatStopPosition;
-        // gameObject.AddComponent<MoveAction>().MovePosition(Port.BoatStopPosition);
+        gameObject.AddComponent<MonoMoveAction>().MovePosition(Port.BoatStopPosition);
     }
 }
