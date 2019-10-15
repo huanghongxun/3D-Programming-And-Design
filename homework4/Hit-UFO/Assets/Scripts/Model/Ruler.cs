@@ -27,7 +27,8 @@ public class Ruler
         var ufo = new UFOModel
         {
             score = Random.Range(1, 5),
-            game = this
+            game = this,
+            actionManager = 
         };
         UFO ufoEntity = UFO.Factory.Instance.Instantiate(ufo);
         ufoEntity.gameObject.transform.parent = game.transform;
@@ -36,7 +37,7 @@ public class Ruler
         for (int i = 1; i < round; ++i) speed *= 1.1f;
 
         float actualSpeed = Random.Range(speed, speed * 1.3f);
-        Rigidbody body = ufo.Send(ufoEntity.renderer.initialPosition, ufoEntity.renderer.initialDirection, actualSpeed);
+        Rigidbody body = ufoEntity.Send(actualSpeed);
         // body.AddTorque(new Vector3(1, 0, 0) * 20);
     }
 

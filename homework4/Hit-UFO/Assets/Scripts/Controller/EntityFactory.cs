@@ -19,6 +19,7 @@
         TEntity entity = renderer.gameObject.AddComponent<TEntity>();
         entity.model = model;
         model.gameObject = renderer.gameObject;
+        model.renderer = renderer;
         entity.renderer = renderer;
         return entity;
     }
