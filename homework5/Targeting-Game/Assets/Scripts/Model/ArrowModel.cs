@@ -7,6 +7,8 @@ public class ArrowModel : Model
 
     public bool success { get; set; }
 
+    public float strength { get; set; }
+
     public override void Start()
     {
     }
@@ -20,6 +22,7 @@ public class ArrowModel : Model
             game.NextTrial();
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
             gameObject.GetComponent<Collider>().enabled = false;
+            gameObject.AddComponent<ShakeAction>().Shake(point, Vector3.up, 3.92f, strength * 10, strength / 20f + 0.5f);
         }
     }
 
@@ -34,6 +37,7 @@ public class ArrowModel : Model
         Rigidbody body = gameObject.GetComponent<Rigidbody>();
         body.isKinematic = false;
         body.AddForce(direction, ForceMode.Impulse);
+        strength = direction.magnitude;
     }
 
     public void CheckAlive()

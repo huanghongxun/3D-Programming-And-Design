@@ -26,13 +26,6 @@ public class Arrow : EntityRenderee<ArrowModel, ArrowRenderer>
         }
     }
 
-    void FixedUpdate()
-    {
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
-        //if (rigidbody.velocity != Vector3.zero)
-        //    rigidbody.rotation = Quaternion.LookRotation(rigidbody.velocity);
-    }
-
     public class Factory : EntityFactory<Arrow, ArrowModel, ArrowRenderer, Factory>
     {
         public override ArrowRenderer InstantiateImpl(ArrowModel model)
