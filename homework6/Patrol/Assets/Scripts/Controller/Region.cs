@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class Region : EntityRenderee<RegionModel, EntityRenderer>
 {
-    public void OnCollisionEnter(Collision collision)
+    public void OnTriggerEnter(Collider collider)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collider.gameObject.tag == "Player")
         {
-            model.OnCollisionWithPlayer(collision.gameObject);
+            model.OnCollisionWithPlayer(collider.gameObject);
         }
     }
 

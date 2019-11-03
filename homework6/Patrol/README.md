@@ -1,191 +1,227 @@
-# 简单的鼠标打飞碟/打靶游戏
+# 模型与动画
 
 用 Unity 实现的游戏，采用纯代码生成所有游戏对象的方法构建游戏。
 
 游戏采用 MVC 模式编写。
 
-## 飞碟游戏
+## 巡逻兵
 
 ### 视频
 
-[优酷视频](https://v.youku.com/v_show/id_XNDM4ODM2ODkwOA==.html?spm=a2h3j.8428770.3416059.1)
+![image-20191104003411846](assets\image-20191104003411846.png)
 
-[视频下载地址](https://github.com/huanghongxun/3D-Programming-And-Design/tree/master/homework4/Hit-UFO/Hit-UFO.mp4)
+[优酷视频]()
 
-### 规则
-
-1. 一轮 10 秒，第 i 轮发射 i 个飞碟
-2. 有圆盘和圆球两种飞碟
-3. 点击飞碟得分，圆球得分少，圆盘得分多，颜色不同得分不同
-4. 飞碟落地不得分
-5. 随着游戏进行，飞碟移动距离和速度都将变大，移动距离和速度在范围内随机
-6. 若第 i 轮没有拿到 i 分则失败
+[视频下载地址](https://github.com/huanghongxun/3D-Programming-And-Design/tree/master/homework6/Patrol/spotlight.mp4)
 
 ### 代码
 
 #### Action
 
-1. `ExplodeAction`：触发游戏对象爆炸的动作
-2. `TipAction`：游戏对象上方显示分数的动作
-3. `MoveAction`：位移动作，用于基础运动管理器
+1. `TraceAction`：对象追踪其他对象的动作，用于敌人追赶玩家
+3. `MoveAction`：位移动作，用于敌人巡逻
 
 #### Controller
 
 1. `Entity`：Controller 的基类，处理点击事件
 2. `EntityFactory`：负责创建 `Entity`
 3. `GameController`：游戏控制器，负责联系游戏进程 `Game` 和 GUI `GuiIngame`
-4. `UFO`：飞碟的控制器，管理飞碟的点击事件，并控制飞碟的模型和颜色
-5. `EntityController`：监听点击事件，并发给 `Entity`
-6. `SSDirector`：控制场景变换
+4. `Enemy`：敌人的控制器，管理敌人的追踪和巡逻状态
+5. `Region`：片区，一个敌人在一个片区内巡逻
+6. `Player`：玩家的控制器，接收玩家的键盘事件进行移动
+7. `EntityController`：监听点击事件，并发给 `Entity`
+8. `SSDirector`：控制场景变换
 
 #### Model
 
 1. `Game`：负责控制游戏进程
-2. `Ruler`：裁判类，负责控制一轮游戏的进程
-3. `UFOModel`：飞碟，处理飞碟的飞行轨迹、速度，以及爆炸和提示得分
-4. `IActionManager`：运动接口，负责发射飞碟
-5. `CCActionManager`：基础运动类，负责通过基础运动发射飞碟
-6. `PhysicalActionManager`：物理运动类，负责通过物理引擎发射飞碟
+2. `Ruler`：裁判类，负责控制一轮游戏的进程，创建敌人、片区、玩家、场景
+3. `EnemyModel`：敌人，处理敌人的运动轨迹和运动状态
+4. `PlayerModel`：玩家，处理玩家与敌人碰撞的事件
+5. `RegionModel`：片区，处理与玩家的碰撞事件，从而触发敌人追踪行为
 
 #### View
 
 1. `GuiIngame`：显示轮次、得分、剩余飞碟数
 2. `EntityRenderer`：游戏对象视图类的基类
 3. `EntityRendererFactory`：负责游戏对象的创建和回收
-4. `UFOEditor`：实现 `Component` 需求：自定义飞碟属性界面
-5. `UFORenderer`：负责绘制飞碟，包括创建和回收飞碟游戏对象
 
-### `IActionManager`
+### 动画
 
-通过将 `Ruler` 中发射 UFO 的代码抽离成一个单独的类来实现发射飞碟。
+#### 玩家
+
+以下是玩家的动画模型，通过 Speed 大小来控制是在停止、步行还是跑步状态
+
+![image-20191104002435661](assets\image-20191104002435661.png)
+
+那么如果玩家按下键盘的 WASD 键，就通过修改 Parameter 来实现移动：
 
 ```csharp
-public interface IActionManager
+if (movement != Vector3.zero)
 {
-    // 发射 UFO
-    void SendUFO(Game game, Ruler ruler, int round);
-    // 判断 UFO 是否掉出世界
-    bool IsUFODead(UFO ufo);
+    GetComponent<Animator>().SetInteger("Speed", 10);
+}
+else
+{
+    GetComponent<Animator>().SetInteger("Speed", 0);
 }
 ```
 
-### `CCActionManager`
+#### 敌人
 
-`CCActionManager` 负责通过位移的方式发射飞碟。
+以下是敌人的动画模型，通过 Speed 大小来控制是在停止、步行还是跑步状态
 
-其中该类通过创建一个 `MoveAction` 来控制飞碟的运动。
+![image-20191104002320834](assets\image-20191104002320834.png)
+
+通过区分是否有目标，来查看敌人需要巡逻或者追逐：
 
 ```csharp
-public class CCActionManager : IActionManager
+if (!target)
 {
-    public void SendUFO(Game game, Ruler ruler, int round)
-    {
-        float speed = 0.1f;
-        for (int i = 1; i < round; ++i) speed *= 1.1f;
-
-        float actualSpeed = Random.Range(speed, speed * 1.3f);
-
-        UFO ufo = UFO.Factory.Instance.Instantiate(new UFOModel
-        {
-            score = Random.Range(1, 5),
-            game = ruler
-        });
-        ufo.gameObject.transform.parent = game.transform;
-        ufo.gameObject.transform.position = ufo.renderer.initialPosition;
-        Vector3 dir = ufo.renderer.initialDirection.normalized * 30;
-        dir.y /= 4;
-        MoveAction action = ufo.gameObject.AddComponent<MoveAction>();
-        action.MovePosition( ufo.renderer.initialDirection + dir);
-        action.Duration /= actualSpeed * 10;
-        action.StartAction();
-    }
-
-    public bool IsUFODead(UFO ufo)
-    {
-        return !ufo.gameObject.GetComponent<MoveAction>();
-    }
+    // 敌人巡逻时使用走路的动画
+    gameObject.GetComponent<Animator>().SetInteger("Speed", 3);
+}
+else
+{
+    // 敌人追赶玩家时使用跑步的动画
+    gameObject.GetComponent<Animator>().SetInteger("Speed", 7);
 }
 ```
 
-### `PhysicalActionManager`
+### 碰撞
 
-`PhysicalActionManager` 通过 Unity 的物理引擎来发射飞碟。
+#### 进入片区
+
+通过碰撞来实现检查玩家是否进入指定区域，以下是片区 Region 类的部分代码：
 
 ```csharp
-public class Ruler
+public void OnTriggerEnter(Collider collider)
 {
-    private readonly int round;
-    private readonly Game game;
-    private float time = 0;
-
-    public int Trial { get; private set; }
-
-    public int MaxTrial { get; private set; } = 10;
-
-    public int Score { get; private set; }
-
-    public Ruler(Game game, int round)
+    if (collider.gameObject.tag == "Player")
     {
-        this.game = game;
-        this.round = round;
-        this.Trial = this.MaxTrial = round;
-        this.time = 10f / MaxTrial;
-        this.Score = 0;
-    }
-
-    public void SendUFO()
-    {
-        var ufo = new UFOModel
-        {
-            score = Random.Range(1, 5),
-            game = this
-        };
-        UFO ufoEntity = UFO.Factory.Instance.Instantiate(ufo);
-        ufoEntity.gameObject.transform.parent = game.transform;
-
-        float speed = 0.1f;
-        for (int i = 1; i < round; ++i) speed *= 1.1f;
-
-        float actualSpeed = Random.Range(speed, speed * 1.3f);
-        Rigidbody body = ufo.Send(ufoEntity.renderer.initialPosition, ufoEntity.renderer.initialDirection, actualSpeed);
-        // body.AddTorque(new Vector3(1, 0, 0) * 20);
-    }
-
-    public void Update()
-    {
-        time += Time.deltaTime;
-        while (time >= 10f / MaxTrial && Trial > 0)
-        {
-            Trial--;
-            time -= 10f / MaxTrial;
-            SendUFO();
-        }
-
-        foreach (var ufo in game.GetComponentsInChildren<UFO>())
-        {
-            if (!ufo.model.success && ufo.transform.position.y < 0)
-                EntityRendererFactory.Instance.Collect(ufo.gameObject);
-        }
-
-        if (Trial <= 0 && game.GetComponentsInChildren<UFO>().Length == 0)
-        {
-            if (Score < round)
-            {
-                Debug.Log(this.GetHashCode());
-                game.RoundLose();
-            }
-            else
-            {
-                game.RoundWin();
-            }
-        }
-    }
-
-    public void AddScore(int score)
-    {
-        Debug.Log(this.GetHashCode());
-        this.Score += score;
+        model.OnCollisionWithPlayer(collider.gameObject);
     }
 }
 ```
 
+#### 撞到敌人
+
+如果被敌人追上，则会触发碰撞：
+
+```csharp
+public void OnCollisionEnter(Collision collision)
+{
+    if (collision.gameObject.tag == "Enemy")
+    {
+        model.OnCollisionWithEnemy(collision.gameObject);
+    }
+}
+```
+
+### 动作
+
+通过 `Action` 类，可以很好地实现代码的复用与模块化。
+
+#### `TraceAction` 
+
+该类负责敌人追逐的动作：
+
+```csharp
+void Update()
+{
+    transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+
+    transform.rotation =
+        Quaternion.LookRotation(target.transform.position - gameObject.transform.position, Vector3.up);
+}
+```
+
+#### `MoveAction`
+
+该类负责巡逻时的两点间移动：
+
+```csharp
+public override void UpdateAction()
+{
+    time += Time.deltaTime;
+    if (time >= Duration) time = Duration;
+    Vector3 rel = (target - source) * (time / Duration);
+    Vector3 newPosition = source + rel;
+    if (local)
+    {
+        transform.localPosition = newPosition;
+
+        transform.localRotation =
+            Quaternion.LookRotation(target - source, Vector3.up);
+    }
+    else
+    {
+        transform.position = newPosition;
+
+        transform.rotation =
+            Quaternion.LookRotation(target - source, Vector3.up);
+    }
+    if (time >= Duration)
+    {
+        Action?.Invoke(this, EventArgs.Empty);
+        RequestDestroy();
+    }
+}
+```
+
+### 初始化地图
+
+为了创建一个五边形的移动轨迹，我们可以在圆上选择 5 个点来确保多边形。我们可以借助原来的工厂模式代码来生产和复用巡逻兵。
+
+```csharp
+for (var i = -1; i <= 1; ++i)
+for (var j = -1; j <= 1; ++j)
+{
+    var center = new Vector3(i * 8, 0, j * 8);
+    var obj = Region.Factory.Instance.Instantiate(new RegionModel
+    {
+        game = this,
+        score = 1,
+        x = i,
+        y = j
+    });
+    obj.transform.position = center;
+    obj.transform.parent = root.transform;
+    enemies[i + 1, j + 1] = Enemy.Factory.Instance.Instantiate(new EnemyModel
+    {
+        score = 1,
+        speed = 1,
+        // 通过在圆上随机选择 5 个点来构造一个凸五边形
+        points = new Queue<Vector3>(Enumerable
+            .Repeat(0, 5)
+            .Select(x => Random.Range(0, 360))
+            .OrderBy(x => x)
+            .Select(angle => center + Quaternion.AngleAxis(angle, Vector3.up) * Vector3.forward * 3)
+            .ToArray())
+    });
+    enemies[i + 1, j + 1].Wander();
+    enemies[i + 1, j + 1].transform.parent = root.transform;
+}
+```
+
+### 发布订阅模式
+
+C# 的事件注册刻意很容易地实现发布订阅模式。
+
+玩家进入片区后，片区通过 `OnTriggerEnter` 方法获知该行为，通过事件将该行为通知出去：
+
+```csharp
+public void OnCollisionWithPlayer(GameObject gameObject)
+{
+    Collision?.Invoke(this, new Vector2Int(x, y));
+}
+```
+
+这样游戏管理器就可以通过注册事件来监听该行为，避免片区模型 RegionModel 类依赖游戏管理器 Ruler 类。
+
+```csharp
+obj.model.Collision += (sender, index) => {
+    Trace(index.x, index.y);
+    AddScore(1);
+};
+```

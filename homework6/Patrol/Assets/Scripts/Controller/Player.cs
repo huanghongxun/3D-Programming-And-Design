@@ -19,6 +19,15 @@ public class Player : EntityRenderee<PlayerModel, EntityRenderer>
         if (Input.GetKey(KeyCode.S)) movement += Vector3.back;
         if (Input.GetKey(KeyCode.D)) movement += Vector3.right;
 
+        if (movement != Vector3.zero)
+        {
+            GetComponent<Animator>().SetInteger("Speed", 10);
+        }
+        else
+        {
+            GetComponent<Animator>().SetInteger("Speed", 0);
+        }
+
         transform.position += movement * Time.deltaTime * 3;
         transform.rotation = Quaternion.LookRotation(movement, Vector3.up);
     }

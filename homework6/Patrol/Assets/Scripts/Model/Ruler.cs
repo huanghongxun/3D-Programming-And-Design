@@ -51,11 +51,14 @@ public class Ruler
             var center = new Vector3(i * 8, 0, j * 8);
             var obj = Region.Factory.Instance.Instantiate(new RegionModel
             {
-                game = this,
                 score = 1,
                 x = i,
                 y = j
             });
+            obj.model.Collision += (sender, index) => {
+                Trace(index.x, index.y);
+                AddScore(1);
+            };
             obj.transform.position = center;
             obj.transform.parent = root.transform;
             enemies[i + 1, j + 1] = Enemy.Factory.Instance.Instantiate(new EnemyModel

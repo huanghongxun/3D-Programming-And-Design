@@ -62,7 +62,7 @@ public class EnemyModel : Model
             }
 
             // 敌人追赶玩家时使用跑步的动画
-            gameObject.GetComponent<Animator>().SetInteger("speed", 7);
+            gameObject.GetComponent<Animator>().SetInteger("Speed", 7);
         }
     }
 

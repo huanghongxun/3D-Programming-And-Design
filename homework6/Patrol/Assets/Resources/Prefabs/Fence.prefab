@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3649118161394700258}
   - component: {fileID: 3649118161397915338}
+  - component: {fileID: 5736246668376022199}
   m_Layer: 0
   m_Name: fence_gate
   m_TagString: Untagged
@@ -83,6 +84,19 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.89787406, y: 0.0069208667, z: 0.67232835}
     m_Extent: {x: 0.9040819, y: 0.110144176, z: 0.67232835}
   m_DirtyAABB: 0
+--- !u!65 &5736246668376022199
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3649118161394734018}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.8122071, y: 0.26437047, z: 1.3446571}
+  m_Center: {x: 0.002167046, y: -0.013034219, z: 0.67232853}
 --- !u!1 &3649118161394734024
 GameObject:
   m_ObjectHideFlags: 0

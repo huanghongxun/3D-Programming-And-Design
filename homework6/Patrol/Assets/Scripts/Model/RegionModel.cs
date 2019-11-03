@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 
 public class RegionModel : Model
 {
-    public Ruler game { get; set; }
+    public event EventHandler<Vector2Int> Collision;
 
     public int score { get; set; } = 1;
 
@@ -12,7 +13,6 @@ public class RegionModel : Model
 
     public void OnCollisionWithPlayer(GameObject gameObject)
     {
-        game.Trace(x, y);
-        game.AddScore(1);
+        Collision?.Invoke(this, new Vector2Int(x, y));
     }
 }
