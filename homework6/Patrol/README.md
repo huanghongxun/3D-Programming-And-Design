@@ -10,7 +10,7 @@
 
 ![image-20191104003411846](assets\image-20191104003411846.png)
 
-[优酷视频]()
+[优酷视频](https://v.youku.com/v_show/id_XNDQyMzY3MDk4OA==.html?spm=a2hzp.8244740.0.0 )
 
 [视频下载地址](https://github.com/huanghongxun/3D-Programming-And-Design/tree/master/homework6/Patrol/spotlight.mp4)
 
