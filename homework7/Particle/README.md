@@ -1,6 +1,6 @@
 # 粒子系统
 
-视频下载链接
+[视频下载链接](https://github.com/huanghongxun/3D-Programming-And-Design/tree/master/homework7/Particle/spotlight.mp4)
 
 
 
@@ -27,3 +27,41 @@
 最终效果如下：
 
 ![image-20191109232237778](assets/image-20191109232237778.png)
+
+### 碰撞和模拟故障
+
+通过添加碰撞脚本 CarCollision：
+
+```
+public float damage = 0;
+public ParticleSystem smokeLeft;
+public ParticleSystem smokeRight;
+
+void OnCollisionEnter(Collision collision)
+{
+	damage += gameObject.GetComponent<Rigidbody>().velocity.magnitude;
+}
+
+void UpdateSmoke(ParticleSystem smoke)
+{
+    var color = smoke.colorOverLifetime;
+    var gradient = new Gradient();
+    gradient.SetKeys(
+    new[] { new GradientColorKey(Color.black, 0), new GradientColorKey(Color.gray, 0.5f), new GradientColorKey(Color.white, 1) },
+    new[] { new GradientAlphaKey(0, 0), new GradientAlphaKey(Math.Min(damage + 10, 30) / 30f, 0.5f), new GradientAlphaKey(0, 1) });
+    color.color = gradient;
+}
+
+void Update()
+{
+    UpdateSmoke(smokeLeft);
+    UpdateSmoke(smokeRight);
+}
+
+void OnGUI()
+{
+	GUI.Label(new Rect(5, 5, 1000, 20), "Damage: " + damage);
+}
+```
+
+我们可以检查车辆的损坏状况并修改烟雾的浓度和颜色来实现损坏模拟
