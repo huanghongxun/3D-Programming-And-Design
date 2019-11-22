@@ -2,7 +2,7 @@
 
 [视频下载链接](https://github.com/huanghongxun/3D-Programming-And-Design/tree/master/homework8/HealthBar/spotlight.mp4)
 
-![image-20191122132854033](assets/image-20191122132854033.png)
+![image-20191122132854033](Assets/image-20191122132854033.png)
 
 [优酷](https://v.youku.com/v_show/id_XNDQ0NDM5NTUyNA==.html?spm=a2h3j.8428770.3416059.1 )
 
@@ -83,4 +83,4 @@ public class SliderScript : MonoBehaviour
 
 拖入 HealthBar 预置到 Car 的子 GameObject，并设置 Slider Script 的 EntityHealth 为 Car 即可。
 
-![image-20191122134135903](assets/image-20191122134135903.png)
+![image-20191122134135903](Assets/image-20191122134135903.png)
