@@ -6,7 +6,7 @@
 
 ## 截图
 
-![1569514218011](E:\sources\homework\3D-Programming-And-Design\homework3\PriestsAndDevils\assets\1569514218011.png)
+![1569514218011](Assets/1569514218011.png)
 
 ## 状态图生成
 
