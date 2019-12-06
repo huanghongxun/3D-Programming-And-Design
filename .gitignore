@@ -7,3 +7,5 @@ Packages
 *.sln
 *.csproj
 Build
+*.log
+.idea
